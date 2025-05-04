@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <iomanip> // for setw
-#include <limits>  // for input clearing
 using namespace std;
 
 class FlightGraph {
@@ -19,10 +17,9 @@ public:
 
     void inputCities() {
         cout << "Enter names of " << numCities << " cities:\n";
-        cin.ignore(); // clear newline from previous input
         for (int i = 0; i < numCities; i++) {
             cout << "City " << i + 1 << ": ";
-            getline(cin, cities[i]);
+            cin >> cities[i];  // Simple: no spaces in city names
         }
     }
 
@@ -33,14 +30,10 @@ public:
             for (int j = 0; j < numCities; j++) {
                 if (i != j) {
                     cout << "Time from " << cities[i] << " to " << cities[j] << ": ";
-                    while (!(cin >> time) || time < 0) { // ensure valid input
-                        cout << "Invalid input. Please enter a non-negative integer: ";
-                        cin.clear();
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    }
+                    cin >> time;
                     adjMatrix[i][j] = time;
                 } else {
-                    adjMatrix[i][j] = 0; // no self-loop time
+                    adjMatrix[i][j] = 0; // no self-flight time
                 }
             }
         }
@@ -50,17 +43,17 @@ public:
         cout << "\nAdjacency Matrix Representation (Travel Time in Hours):\n\n";
 
         // Print column headers (city names)
-        cout << setw(15) << " ";
-        for (const auto& city : cities) {
-            cout << setw(15) << city;
+        cout << "\t";
+        for (int i = 0; i < numCities; i++) {
+            cout << cities[i] << "\t";
         }
         cout << "\n";
 
-        // Print each row
+        // Print rows
         for (int i = 0; i < numCities; i++) {
-            cout << setw(15) << cities[i]; // Row header (city name)
+            cout << cities[i] << "\t";  // Row header
             for (int j = 0; j < numCities; j++) {
-                cout << setw(15) << adjMatrix[i][j];
+                cout << adjMatrix[i][j] << "\t";
             }
             cout << endl;
         }
