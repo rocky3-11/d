@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <queue> 
+using namespace std;
+
+int main() {
+    int n;
+
+    cout << "Enter number of students: ";
+    cin >> n;
+    
+    vector<int> marks(n);
+    cout << "Enter marks of " << n << " students:\n";
+
+    for (int i = 0; i < n; i++) {
+        cout << "Student " << i + 1 << ": ";
+        cin >> marks[i];
+    }
+
+    // Creating maxHeap (for maximum marks)
+    priority_queue<int> maxHeap;
+
+    // Creating minHeap (for minimum marks)
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+
+    // Pushing the marks into both heaps
+    for (int i = 0; i < n; i++) {
+        maxHeap.push(marks[i]);
+        minHeap.push(marks[i]);
+    }
+
+    // Get the top elements from the heaps
+    int maxMarks = maxHeap.top();
+    int minMarks = minHeap.top();
+
+    // Output the results
+    cout << "\nMaximum Marks: " << maxMarks << endl;
+    cout << "Minimum Marks: " << minMarks << endl;
+
+    return 0;
+}
