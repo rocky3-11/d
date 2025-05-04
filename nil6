@@ -1,0 +1,112 @@
+// Title:- Graph representation using BFS and DFS 
+#include <iostream> 
+#include <vector> 
+#include <queue> 
+using namespace std; 
+// Class representing the Graph 
+class Graph { 
+private: 
+    vector<vector<int>> adjMatrix; // Adjacency Matrix for DFS 
+    vector<vector<int>> adjList;   // Adjacency List for BFS 
+    vector<string> landmarks; // Stores names of landmarks 
+    int numLandmarks; // Number of landmarks 
+public: 
+    // Constructor to initialize graph 
+    Graph(int n) { 
+        numLandmarks = n; 
+        adjMatrix.resize(n, vector<int>(n, 0)); // Initialize adjacency matrix with 0s 
+        adjList.resize(n); // Initialize adjacency list 
+        landmarks.resize(n); 
+    } 
+    // Function to take input for landmarks 
+    void inputLandmarks() { 
+        cout << "Enter names of " << numLandmarks << " landmarks:\n"; 
+        for (int i = 0; i < numLandmarks; i++) { 
+            cout << "Landmark " << i + 1 << ": "; 
+            cin >> landmarks[i]; 
+        } 
+    } 
+    // Function to add connections (edges) between landmarks 
+    void addConnections() { 
+        int edges; 
+        cout << "Enter number of connections (edges): "; 
+        cin >> edges; 
+        cout << "Enter connections between landmarks (use index starting from 0):\n"; 
+        for (int i = 0; i < edges; i++) { 
+            int u, v; 
+            cout << "Enter edge (landmark1 landmark2): "; 
+            cin >> u >> v; 
+            adjMatrix[u][v] = adjMatrix[v][u] = 1; // Mark connection in adjacency matrix (undirected 
+graph) 
+            adjList[u].push_back(v); // Add to adjacency list 
+            adjList[v].push_back(u); 
+        } 
+    } 
+    // Function to display the adjacency matrix 
+    void displayAdjMatrix() { 
+        cout << "\nAdjacency Matrix:\n\t"; 
+        for (const auto& lm : landmarks) cout << lm << "\t"; 
+        cout << "\n"; 
+        for (int i = 0; i < numLandmarks; i++) { 
+            cout << landmarks[i] << "\t"; 
+            for (int j = 0; j < numLandmarks; j++) { 
+                cout << adjMatrix[i][j] << "\t"; 
+            } 
+            cout << "\n"; 
+        } 
+    }     
+    // Recursive function for Depth-First Search (DFS) 
+    void DFSUtil(int node, vector<bool>& visited) { 
+        cout << landmarks[node] << " "; // Print the landmark 
+        visited[node] = true; // Mark as visited 
+        for (int i = 0; i < numLandmarks; i++) { 
+            if (adjMatrix[node][i] == 1 && !visited[i]) { 
+                DFSUtil(i, visited); 
+            } 
+        } 
+    } 
+    // Function to perform DFS traversal 
+    void DFS(int start) { 
+        cout << "\nDFS Traversal: "; 
+        vector<bool> visited(numLandmarks, false); // Initialize visited array 
+        DFSUtil(start, visited); 
+        cout << endl; 
+    } 
+     
+    // Function to perform Breadth-First Search (BFS) 
+    void BFS(int start) { 
+        cout << "\nBFS Traversal: "; 
+        vector<bool> visited(numLandmarks, false); // Initialize visited array 
+        queue<int> q; 
+        q.push(start); 
+        visited[start] = true; 
+         
+        while (!q.empty()) { 
+            int node = q.front(); 
+            q.pop(); 
+            cout << landmarks[node] << " "; // Print the landmark 
+             
+            for (int neighbor : adjList[node]) { 
+                if (!visited[neighbor]) { 
+                    visited[neighbor] = true; 
+                    q.push(neighbor); 
+                } 
+            } 
+        } 
+        cout << endl; 
+    } 
+}; 
+int main() { 
+    int n, start; 
+    cout << "Enter number of landmarks: "; 
+    cin >> n; 
+    Graph g(n); // Create graph object 
+    g.inputLandmarks(); // Input landmark names 
+    g.addConnections(); // Input edges (connections) 
+    g.displayAdjMatrix(); // Display adjacency matrix 
+    cout << "Enter starting landmark index for DFS and BFS: "; 
+cin >> start; 
+g.DFS(start); // Perform DFS traversal 
+g.BFS(start); // Perform BFS traversal 
+return 0; 
+}
