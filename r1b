@@ -1,0 +1,47 @@
+class TelephoneDirectory: 
+    def __init__(self, size): 
+        self.size = size 
+        self.directory = [None] * size 
+    def hash_function(self, key): 
+        return key % self.size 
+    def insert(self, name, number): 
+        key = sum(ord(char) for char in name.lower()) 
+        index = self.hash_function(key) 
+        for i in range(self.size): 
+            new_index = (index + i) % self.size 
+            if self.directory[new_index] is None: 
+                self.directory[new_index] = (name, number) 
+                return 
+        print("Directory is full! Cannot insert new entry.") 
+    def search(self, name): 
+        key = sum(ord(char) for char in name.lower()) 
+        index = self.hash_function(key)   
+        for i in range(self.size): 
+            new_index = (index + i) % self.size 
+            if self.directory[new_index] is None: 
+                return None 
+            if self.directory[new_index][0].lower() == name.lower(): 
+                return self.directory[new_index][1] 
+        return None 
+    def display(self): 
+        print("\nTelephone Directory:") 
+        for i, entry in enumerate(self.directory): 
+            if entry: 
+                print(f"Index {i}: {entry}") 
+            else: 
+                print(f"Index {i}: Empty") 
+if __name__ == "__main__": 
+    directory = TelephoneDirectory(10) 
+    directory.insert("Amit", "9876543210") 
+    directory.insert("Priya", "9123456789") 
+    directory.insert("Rahul", "9988776655") 
+    directory.insert("Sita", "9595959595") 
+    directory.insert("Vikram", "9933445566")     
+    directory.display() 
+    names_to_search = ["Amit", "Priya", "Rahul", "Neha"] 
+    for name in names_to_search: 
+        result = directory.search(name) 
+        if result: 
+            print(f"Phone number for {name}: {result}") 
+        else: 
+            print(f"{name} not found in the directory.") 
