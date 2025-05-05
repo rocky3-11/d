@@ -1,0 +1,58 @@
+class HashTable: 
+     def __init__(self, size): 
+     self.size = size 
+     self.table = []  # Initialize an empty list 
+     for _ in range(size): 
+            self.table.append([])  # Append an empty list for each index 
+ 
+ 
+ 
+    def hash_function(self, key): 
+        return key % self.size  # Simple modulo-based hash function 
+ 
+    def insert(self, key): 
+        index = self.hash_function(key) 
+        self.table[index].append(key)  # Insert key into the appropriate list 
+ 
+    def search(self, key): 
+        index = self.hash_function(key) 
+        if key in self.table[index]: 
+            return True  # Key found 
+        return False  # Key not found 
+ 
+    def delete(self, key): 
+        index = self.hash_function(key) 
+        if key in self.table[index]: 
+            self.table[index].remove(key)  # Remove key from the list 
+            return True 
+        return False 
+ 
+    def display(self): 
+        for i, chain in enumerate(self.table): 
+            print(f"Index {i}: {chain}") 
+ 
+ 
+# Example usage 
+if __name__ == "__main__": 
+    ht = HashTable(10)  # Create a hash table of size 10 
+ 
+    # Insert keys 
+    ht.insert(15) 
+    ht.insert(25) 
+    ht.insert(35) 
+    ht.insert(10) 
+ 
+    # Display the hash table 
+    print("Hash Table:") 
+    ht.display() 
+ 
+    # Search for a key 
+    key = 25 
+    print(f"\nSearch for {key}: {'Found' if ht.search(key) else 'Not Found'}") 
+ 
+# Delete a key 
+key = 35 
+print(f"\nDelete {key}: {'Success' if ht.delete(key) else 'Failure'}") 
+# Display the hash table after deletion 
+print("\nHash Table after deletion:") 
+ht.display()
